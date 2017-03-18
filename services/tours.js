@@ -1,13 +1,50 @@
 "use strict"
 var db = require('./db');
 var TourModel = require('../models/tour');
+var PointService = require('./points');
 
 class TourService {
   constructor() {
   }
 
+  getAllToursAndPoints() {
+    var self = this;
+    var pointService = new PointService();
+
+    return new Promise((resolve, reject) => {
+      self.getAllTours()
+        .then(tours => {
+          var tourPointLookups = tours.map(tour => {
+            return new Promise((resolve, reject) => {
+              pointService.getPointsByTourId(tour.id)
+                .then(points => {
+                  tour.start_point = points[0];
+                  resolve(tour);
+                }).catch(reject);
+            })
+          });
+
+          Promise.all(tourPointLookups).then(resolve).catch(reject);
+        });
+      });
+  }
+
   getAllTours() {
     return db.map('SELECT * FROM tours', [], t => new TourModel(t));
+  }
+
+  getTourAndPointsById(tourId) {
+    var self = this;
+    var pointService = new PointService();
+    return new Promise((resolve, reject) => {
+      self.getTourById(tourId).then(tour => {
+        pointService.getPointsByTourId(tourId)
+          .then(points => {
+            tour.points = points;
+            resolve(tour);
+          }).catch(reject);
+      }).catch(reject);
+    });
   }
 
   getTourById(tourId) {
