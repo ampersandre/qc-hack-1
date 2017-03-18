@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var Tour = require('../models/tour');
 var Point = require('../models/point');
 var TourService = require('../services/tours');
+var PointService = require("../services/points");
 
 var router = express.Router();
 
@@ -20,9 +21,10 @@ router.get('/create', function(req, res) {
 });
 
 router.get('/editor/:id', function(req, res) {
-    // get it 
-    var t = tourService.getTourAndPointsById(req.params.id);
-    res.render("pages/editor", t);
+    const tourService = new TourService();
+    var t = tourService.getTourAndPointsById(req.params.id).then(function(tour) {
+        res.render("pages/editor", tour);
+    });
 });
 
 router.get('/tourlist', function(req, res) {
@@ -37,15 +39,20 @@ router.get('/tourlist', function(req, res) {
 router.post('/editor', urlencodedParser, function(req, res) {
     var results = req.body;
     var t = {};
+    var tourService = new TourService();
+    var pointService = new PointService();
     if (results.id) {
         // do an update
         t = formDataToModel(results);
-        // update
+        var tourService = new TourService();
+        tourService.updateTour(t).then(function() {
+            pointService.savePointsForTour(t.points, t.id);
+        });
     } else {
         // do a create
         t = formDataToModel(results);
-        TourServ.createTour(t).then(function(id) {
-            PointServ.savePointsForTour(t.points, id);
+        tourService.createTour(t).then(function(id) {
+            pointService.savePointsForTour(t.points, id);
         });
     }
     res.render("pages/editor", t);

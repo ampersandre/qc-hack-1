@@ -70,10 +70,10 @@
 
         <script src="/js/map.js"></script>
         <script>
-        (function(){
+        $(function(){
             populateMapWithPoints([
                 <% points.forEach(function(p) { %>
-                {lat: <%= p.lat %>, lng: <%= p.lng %>}
+                {lat: <%= p.lat %>, lng: <%= p.lng %>},
                 <% }) %>
             ]);
         })
