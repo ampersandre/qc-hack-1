@@ -46,16 +46,20 @@ router.post('/editor', urlencodedParser, function(req, res) {
         t = formDataToModel(results);
         var tourService = new TourService();
         tourService.updateTour(t).then(function() {
-            pointService.savePointsForTour(t.points, t.id);
+            pointService.savePointsForTour(t.points, t.id).then(function() {
+                res.redirect("/editor/" + t.id);
+            });
         });
     } else {
         // do a create
         t = formDataToModel(results);
         tourService.createTour(t).then(function(id) {
-            pointService.savePointsForTour(t.points, id);
+            pointService.savePointsForTour(t.points, id).then(function() {
+                res.redirect("/editor/" + t.id);
+            });
         });
     }
-    res.render("pages/editor", t);
+    res.render("pages/editor-fail", t);
 });
 
 function formDataToModel(results) {
@@ -72,6 +76,7 @@ function formDataToModel(results) {
         }));
     }
     t = new Tour({
+        id: results.id,
         name: results.name,
         icon: results.imageUrl,
         points: points
