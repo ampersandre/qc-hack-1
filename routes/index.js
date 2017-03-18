@@ -23,16 +23,15 @@ router.get('/editor/:id', function(req, res) {
     // get it 
     var t = new Tour({ name: "test", points: [] });
     res.render("pages/editor", t);
+});
 
-    router.get('/tourlist', function(req, res) {
-        const tourService = new TourService();
+router.get('/tourlist', function(req, res) {
+    const tourService = new TourService();
 
-        tourService.getAllToursAndPoints()
-            .then(tours => {
-                res.render('pages/tourlist', { tours: tours });
-            });
-    });
-
+    tourService.getAllToursAndPoints()
+        .then(tours => {
+            res.render('pages/tourlist', { tours: tours });
+        });
 });
 
 router.post('/editor', urlencodedParser, function(req, res) {
