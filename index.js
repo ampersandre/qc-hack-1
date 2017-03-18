@@ -10,6 +10,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.use('/', require('./routes/index.js'));
+app.use('/api', require('./routes/api.js'));
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
