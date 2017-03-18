@@ -21,7 +21,7 @@ router.get('/create', function(req, res) {
 
 router.get('/editor/:id', function(req, res) {
     // get it 
-    var t = new Tour({ name: "test", points: [] });
+    var t = tourService.getTourAndPointsById(req.params.id);
     res.render("pages/editor", t);
 });
 
