@@ -1,6 +1,9 @@
 "use strict"
 var db = require('./db');
 var PointModel = require('../models/point');
+var pgp = db.$config.pgp;
+
+var csPoints = new pgp.helpers.ColumnSet(['name', 'number', 'icon', 'lat', 'lng', 'tour_id'], {table : 'points'});
 
 class PointService {
   constructor() {
@@ -15,11 +18,9 @@ class PointService {
       var batchCommands = [
         tx.none(`DELETE FROM points WHERE tour_id = $<tour_id>`, { tour_id: tourId })
       ];
-      for (var i = 0; i < points.length; i++) {
-        batchCommands.push(tx.none(`INSERT INTO points (name, number, icon, lat, lng, tour_id)
-                VALUES $<name>, $<number>, $<icon>, $<lat>, $<lng>, $<tour_id>
-                RETURNING id`,
-          point));
+      if(points.length) {
+        var insert = pgp.helpers.insert(points, csPoints) + 'RETURNING *';
+        batchCommands.push(tx.many(insert));
       }
       return tx.batch(batchCommands);
     });
