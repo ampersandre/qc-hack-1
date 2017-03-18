@@ -2,7 +2,7 @@ var map = L.map('map', {            
   center: [50.454722, -104.60666700000002],
   zoom: 13
 });
-var points = [];
+var allPoints = [];
 
 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -21,9 +21,11 @@ function onMapClick(e) {
     onPointClick(point);
 }
 
-function redrawPoints() {
+function redrawPoints(points) {
   $('#pointList').empty();
+  allPoints = [];
   points = points.sort((a, b) => a.number < b.number ? -1 : 1);
+
   points.forEach(p => {
     map.removeLayer(p.marker);
     addPoint(p)
@@ -33,7 +35,7 @@ function redrawPoints() {
 function addPoint(point) {
   point.marker = L.marker([point.lat, point.lng]).addTo(map);
   point.marker.on('click', function() { onPointClick(point) });
-  points.push(point);
+  allPoints.push(point);
   var pointElement = $(`<div class="point">
     <div class="name"><b>Name:</b> ${point.name}</div>
     <input type="hidden" name="points[${point.number}].name" value="${point.name}"/>
@@ -66,6 +68,6 @@ function savePointClick(point) {
   point.name = pointEditor.find('.pointName').val();
   point.number = pointEditor.find('.pointNumber').val();
   point.image = pointEditor.find('.pointImage').val();
-  redrawPoints();
+  redrawPoints(allPoints);
   $('#pointEditor').slideUp();
 }
