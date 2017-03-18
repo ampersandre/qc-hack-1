@@ -5,6 +5,14 @@
     <% include ../partials/header.ejs %>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
         <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+        <style>
+          #pointList .point {
+            margin: 3px 0;
+            padding: 3px 0;
+            border-bottom: 1px solid #ccc;
+            cursor: pointer;
+          }
+        </style>
 </head>
 
 <body>
@@ -22,12 +30,8 @@
             </div>
         </div>
         <div class="container" style="margin-bottom:25px;">
-            <div class="alert alert-info text-center" role="alert">
-                Some little disclaimer here. Click this <a href="#" class="alert-link">Really important information</a> for
-                more information.
-            </div>
             <hr>
-            <form id="form" action="/editor" method="post" >
+            <form id="form" method="post" >
             <% if(id){ %>
             <input type="hidden" name="id" value="<%= id %>" />
             <% } %>
@@ -50,10 +54,31 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
-                                        <button type="submit" class="btn btn-default">Submit</button>
+                                        <button type="submit" class="btn btn-default">Save</button>
                                     </div>
                                 </div>
                             </form>
+                        </div>
+                        <div class="row" style="margin-top: 20px;">
+                          <div class="col-sm-6">
+                            <h4>Points:</h4>
+                            <div id="pointList"></div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div id="pointEditor" style="display: none;">
+                              <h3>Edit point</h3>
+                              <div>
+                                <label>Name <input class="pointName"/></label>
+                              </div>
+                              <div>
+                                <label>Number <input class="pointNumber"/></label>
+                              </div>
+                              <div>
+                                <label>Image <input class="pointImage"/></label>
+                              </div>
+                              <button id="savePointButton">Save</button>
+                            </div>
+                          </div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -70,12 +95,16 @@
 
         <script src="/js/map.js"></script>
         <script>
-        $(function(){
-            populateMapWithPoints([
-                <% points.forEach(function(p) { %>
-                {lat: <%= p.lat %>, lng: <%= p.lng %>},
-                <% }) %>
-            ]);
+        $(function() {
+          <% points.forEach(function(p) { %>
+            addPoint({
+              lat: <%= p.lat %>,
+              lng: <%= p.lng %>,
+              name: "<%= p.name %>",
+              number: <%= p.number %>,
+              image: "<%= p.image %>"
+            });
+          <% }) %>
         })
         </script>
 </body>

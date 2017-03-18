@@ -36,28 +36,32 @@ router.get('/tourlist', function(req, res) {
         });
 });
 
-router.post('/editor', urlencodedParser, function(req, res) {
+router.post('/editor/:id', urlencodedParser, function(req, res) {
+    var tourId = req.params.id;
     var results = req.body;
+    console.log(req.body);
     var t = {};
     var tourService = new TourService();
     var pointService = new PointService();
     if (results.id) {
         // do an update
-        t = formDataToModel(results);
+        /*t = formDataToModel(results);
         tourService.updateTour(t).then(function() {
             pointService.savePointsForTour(t.points, t.id).then(function() {
                 res.redirect("/editor/" + t.id);
             });
-        });
+        });*/
     } else {
         // do a create
-        t = formDataToModel(results);
+        /*t = formDataToModel(results);
         tourService.createTour(t).then(function(id) {
             pointService.savePointsForTour(t.points, id).then(function() {
                 res.redirect("/editor/" + t.id);
             });
-        });
+        });*/
     }
+    res.redirect(`/editor/${tourId}`);
+    //res.render("pages/editor-fail", t);
 });
 
 function formDataToModel(results) {
