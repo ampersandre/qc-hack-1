@@ -8,6 +8,7 @@ module.exports = function PointModel(opts) {
    icon: opts.icon,
    lat: opts.lat,
    lng: opts.lng,
-   tour_id: opts.tour_id
+   tour_id: opts.tour_id,
+   image: 'http://www.telegraph.co.uk/content/dam/Travel/galleries/travel/activityandadventure/The-worlds-most-dangerous-mountains/mountain1_2625884a-large.jpg'
  };
 };
