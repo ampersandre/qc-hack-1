@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include ../partials/header.ejs %>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+</head>
+
+<body>
+
+    <% include ../partials/nav.ejs %>
+
+        <div class="jumbotron text-center">
+            <div class="container">
+                <a href="/" class="lang-logo">
+                    <img src="/lang-logo.png">
+                </a>
+                <h1>Know a cool route in Regina?</h1>
+                <p>Add it using our cool app!</p>
+                <a type="button" class="btn btn-lg btn-default" href="#form">Do it!</a>
+            </div>
+        </div>
+        <div class="container" style="margin-bottom:25px;">
+            <div class="alert alert-info text-center" role="alert">
+                Some little disclaimer here. Click this <a href="#" class="alert-link">Really important information</a> for
+                more information.
+            </div>
+            <hr>
+            <form id="form" action="/editor" method="post" >
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>Meta Information Here</h3>
+                        <div>
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="name">Name</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="name" placeholder="Enter Name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="imageUrl">Image</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="imageUrl" placeholder="Enter Image Url">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button type="submit" class="btn btn-default">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h3>Map</h3>
+                        <div id="map" style="height:400px"></div>
+                    </div>
+                </div>
+                <!-- row -->
+            </form>
+        </div>
+
+        <script src="js/map.js"></script>
+</body>
+
+</html>
