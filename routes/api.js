@@ -7,10 +7,27 @@ var PointService = require('../services/points');
 
 router.get('/tours', function(req, res) {
   const tourService = new TourService();
+  const pointService = new PointService();
 
   tourService.getAllTours()
     .then(tours => {
-      res.json(tours);
+      tourPointLookups = [];
+      for (var i = 0; i < tours.length; i++) {
+        var tour = tours[i];
+        var tourPointLookup = new Promise((resolve, reject) => {
+          pointService.getPointsByTourId(tour.id)
+            .then(points => {
+              tour.start_point = points[0];
+              resolve(tour);
+            });
+        });
+        tourPointLookups.push(tourPointLookup);
+      }
+
+      Promise.all(tourPointLookups)
+        .then(tours => {
+          res.json(tours);
+        });
     });
 });
 

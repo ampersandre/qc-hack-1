@@ -12,7 +12,7 @@ class PointService {
         .then(data => {
           if (data) {
             var allPoints = data.map((p) => new PointModel(p));
-            resolve(allPoints);
+            resolve(allPoints.sort((a, b) => a.number < b.number ? -1 : 1));
           } else {
             resolve([]);
           }
