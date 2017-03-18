@@ -44,7 +44,6 @@ router.post('/editor', urlencodedParser, function(req, res) {
     if (results.id) {
         // do an update
         t = formDataToModel(results);
-        var tourService = new TourService();
         tourService.updateTour(t).then(function() {
             pointService.savePointsForTour(t.points, t.id).then(function() {
                 res.redirect("/editor/" + t.id);
