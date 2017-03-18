@@ -58,7 +58,6 @@ router.post('/editor', urlencodedParser, function(req, res) {
             });
         });
     }
-    res.render("pages/editor-fail", t);
 });
 
 function formDataToModel(results) {
