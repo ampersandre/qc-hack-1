@@ -10,7 +10,7 @@ class PointService {
   }
 
   getPointsByTourId(tourId) {
-    return db.manyOrNone('SELECT * FROM points WHERE tour_id = $<tourId>', { tourId: tourId }, p => new PointModel(p));
+    return db.map('SELECT * FROM points WHERE tour_id = $<tourId>', { tourId: tourId }, p => new PointModel(p));
   }
 
   savePointsForTour(points, tourId) {
