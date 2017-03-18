@@ -1,5 +1,5 @@
 "use strict"
-var pgp = require('pg-promise')();
+var db = require('./db');
 var TourModel = require('../models/tour');
 
 class TourService {
@@ -8,11 +8,23 @@ class TourService {
 
   getAllTours() {
     return new Promise((resolve, reject) => {
-      var db = pgp(process.env.DATABASE_URL);
       db.any('SELECT * FROM tours')
         .then(data => {
           var allTours = data.map((t) => new TourModel(t));
           resolve(allTours);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  getTourById(tourId) {
+    return new Promise((resolve, reject) => {
+      db.any('SELECT * FROM tours WHERE id = $<tourId>', { tourId: tourId })
+        .then(data => {
+          var tour = new TourModel(data[0]);
+          resolve(tour);
         })
         .catch(err => {
           reject(err);
