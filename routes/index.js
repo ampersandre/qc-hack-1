@@ -13,7 +13,12 @@ var urlencodedParser = bodyParser.urlencoded({
 })
 
 router.get('/', function(req, res) {
-    res.render('pages/index');
+    const tourService = new TourService();
+
+    tourService.getAllToursAndPoints()
+        .then(tours => {
+            res.render('pages/tourlist', { tours: tours });
+        });
 });
 
 router.get('/create', function(req, res) {
