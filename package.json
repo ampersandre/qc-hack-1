@@ -4,6 +4,9 @@
   "description": "a queen city hack project",
   "author": "incompetent",
   "main": "index.js",
+  "engines": {
+    "node": "6.2.1"
+  },
   "scripts": {
     "test": "grunt test",
     "build": "grunt build",
