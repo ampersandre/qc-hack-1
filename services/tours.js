@@ -1,3 +1,4 @@
+"use strict"
 var pgp = require('pg-promise')();
 var TourModel = require('../models/tour');
 
