@@ -7,7 +7,7 @@ class TourService {
   }
 
   getAllTours() {
-    return db.manyOrNone('SELECT * FROM tours', [], t => new TourModel(t));
+    return db.map('SELECT * FROM tours', [], t => new TourModel(t));
   }
 
   getTourById(tourId) {
