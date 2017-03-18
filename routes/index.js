@@ -15,21 +15,44 @@ router.get('/', function(req, res) {
     res.render('pages/index');
 });
 
-router.get('/tourlist', function(req, res) {
-  const tourService = new TourService();
-
-  tourService.getAllToursAndPoints()
-    .then(tours => {
-      res.render('pages/tourlist', { tours: tours });
-    });
+router.get('/create', function(req, res) {
+    res.render("pages/editor", new Tour({}));
 });
 
-router.get('/editor', function(req, res) {
-    res.render("pages/editor");
+router.get('/editor/:id', function(req, res) {
+    // get it 
+    var t = new Tour({ name: "test", points: [] });
+    res.render("pages/editor", t);
+
+    router.get('/tourlist', function(req, res) {
+        const tourService = new TourService();
+
+        tourService.getAllToursAndPoints()
+            .then(tours => {
+                res.render('pages/tourlist', { tours: tours });
+            });
+    });
+
 });
 
 router.post('/editor', urlencodedParser, function(req, res) {
     var results = req.body;
+    var t = {};
+    if (results.id) {
+        // do an update
+        t = formDataToModel(results);
+        // update
+    } else {
+        // do a create
+        t = formDataToModel(results);
+        TourServ.createTour(t).then(function(id) {
+            PointServ.savePointsForTour(t.points, id);
+        });
+    }
+    res.render("pages/editor", t);
+});
+
+function formDataToModel(results) {
     var points = [];
     for (var pIdx in results.points) {
         var pointFromForm = results.points[pIdx];
@@ -47,9 +70,7 @@ router.post('/editor', urlencodedParser, function(req, res) {
         icon: results.imageUrl,
         points: points
     });
-    // do the thing that creates stuff
-    res.render("pages/editor-success", t);
-});
-
+    return t;
+}
 
 module.exports = router;

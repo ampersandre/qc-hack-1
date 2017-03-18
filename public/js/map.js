@@ -17,3 +17,10 @@ function onMapClick(e) {
 }
 
 map.on('click', onMapClick);
+
+function populateMapWithPoints(pts) {
+    for (var idx in pts) {
+        var point = pts[idx];
+        points.push(L.marker([point.lat, point.lng]).addTo(map));
+    }
+}
