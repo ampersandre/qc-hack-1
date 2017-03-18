@@ -11,7 +11,7 @@ L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 function onMapClick(e) {
-    $("#form").append('<input type="hidden" name="points[]" value="' + e.latlng.lat + ',' + e.latlng.lng + '" />');
+    $("#form").append('<input type="hidden" name="points" value="' + e.latlng.lat + ',' + e.latlng.lng + '" />');
     console.log(e);
     points.push(L.marker([e.latlng.lat, e.latlng.lng]).addTo(map))
 }
