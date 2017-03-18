@@ -48,7 +48,7 @@ function addPoint(point) {
 }
 
 function onPointClick(point) {
-  map.setView({ lat: point.lat, lng: point.lng }, 13);
+  map.setView({ lat: point.lat, lng: point.lng }, 18);
   var pointEditor = $('#pointEditor');
   pointEditor.find('.pointName').val(point.name);
   pointEditor.find('.pointNumber').val(point.number);
