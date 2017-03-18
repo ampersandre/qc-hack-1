@@ -23,6 +23,26 @@ class PointService {
     });
   }
 
+  savePointsForTour(points, tourId) {
+    return new Promise((resolve, reject) => {
+      db.tx(tx => {
+        var batchCommands = [
+          tx.none(`DELETE FROM points WHERE tour_id = $<tour_id>`, { tour_id: tourId })
+        ];
+        for (var i = 0; i < points.length; i++) {
+          batchCommands.push(tx.none(`INSERT INTO points (name, number, icon, lat, lng, tour_id)
+                  VALUES $<name>, $<number>, $<icon>, $<lat>, $<lng>, $<tour_id>
+                  RETURNING id`,
+            point));
+        }
+        return tx.batch(batchCommands);
+      }).then(data => {
+        resolve(data);
+      });
+    });
+  }
+
+
 }
 
 module.exports = PointService;
