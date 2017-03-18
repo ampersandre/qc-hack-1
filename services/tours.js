@@ -19,7 +19,7 @@ class TourService {
   }
 
   updateTour(tour) {
-    return db.none('UPDATE SET name = $<name>, icon = $<icon>, up_votes = $<up_votes>, down_votes = $<down_votes>', tour);
+    return db.none('UPDATE tours SET name = $<name>, icon = $<icon>, up_votes = $<up_votes>, down_votes = $<down_votes> WHERE id = $<id>', tour);
   }
 
 }
