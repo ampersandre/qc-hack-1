@@ -7,45 +7,19 @@ class TourService {
   }
 
   getAllTours() {
-    return new Promise((resolve, reject) => {
-      db.any('SELECT * FROM tours')
-        .then(rows => {
-          var allTours = rows.map((t) => new TourModel(t));
-          resolve(allTours);
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
+    return db.manyOrNone('SELECT * FROM tours', [], t => new TourModel(t));
   }
 
   getTourById(tourId) {
-    return new Promise((resolve, reject) => {
-      db.any('SELECT * FROM tours WHERE id = $<tourId>', { tourId: tourId })
-        .then(rows => {
-          var tour = new TourModel(rows[0]);
-          resolve(tour);
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
+    return db.one('SELECT * FROM tours WHERE id = $<tourId>', { tourId: tourId }, t => new TourModel(t));
   }
 
   createTour(tour) {
-    return new Promise((resolve, reject) => {
-      db.any('INSERT INTO tours (name, icon) VALUES $<name>, $<icon> RETURNING id',
-        tour)
-        .then(resolve);
-    });
+    return db.one('INSERT INTO tours (name, icon) VALUES $<name>, $<icon> RETURNING id', tour);
   }
 
   updateTour(tour) {
-    return new Promise((resolve, reject) => {
-      db.any('UPDATE SET name = $<name>, icon = $<icon>, up_votes = $<up_votes>, down_votes = $<down_votes>',
-        tour)
-        .then(resolve);
-    });
+    return db.none('UPDATE SET name = $<name>, icon = $<icon>, up_votes = $<up_votes>, down_votes = $<down_votes>', tour);
   }
 
 }
