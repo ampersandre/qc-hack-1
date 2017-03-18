@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include ../partials/header.ejs %>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+</head>
+
+<body>
+
+    <% include ../partials/nav.ejs %>
+
+        <div class="container" style="margin-bottom:25px;">
+            <div class="row">
+              <div class="col-xs-12">
+                Current Routes <%= tours.length %>
+              </div>
+              <% for(var i = 0; i < tours.length; i++) {%>
+                <div class="col-xs-12">
+                  <div class="row">
+                    <a href="/editor/<%=tours[i].id%>">
+                      <div class="col-md-2 col-xs-3">
+                        <img style="max-width: 100%" src="<%= tours[i].icon %>"/>
+                      </div>
+                      <div class="col-xs-3">
+                        <b><%=tours[i].name%></b>
+                      </div>
+                      <div class="col-xs-3">
+                        <b><%=tours[i].points.length%></b>
+                      </div>
+                      <div class="col-xs-3">
+                        <b><%=tours[i].up_votes%></b>
+                        <b><%=tours[i].down_votes%></b>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              <% } %>
+            </div>
+        </div>
+
+        <script src="js/map.js"></script>
+</body>
+
+</html>

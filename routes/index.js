@@ -3,6 +3,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var Tour = require('../models/tour');
 var Point = require('../models/point');
+var TourService = require('../services/tours');
 
 var router = express.Router();
 
@@ -12,6 +13,15 @@ var urlencodedParser = bodyParser.urlencoded({
 
 router.get('/', function(req, res) {
     res.render('pages/index');
+});
+
+router.get('/tourlist', function(req, res) {
+  const tourService = new TourService();
+
+  tourService.getAllToursAndPoints()
+    .then(tours => {
+      res.render('pages/tourlist', { tours: tours });
+    });
 });
 
 router.get('/editor', function(req, res) {

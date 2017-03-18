@@ -9,6 +9,10 @@ router.get('/tours', function(req, res) {
 
   tourService.getAllToursAndPoints()
     .then(tours => {
+      tours.forEach(t => {
+        t.start_point = t.points[0];
+        t.points = undefined;
+      })
       res.json(tours);
     });
 });

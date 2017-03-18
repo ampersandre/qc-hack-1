@@ -18,7 +18,7 @@ class TourService {
             return new Promise((resolve, reject) => {
               pointService.getPointsByTourId(tour.id)
                 .then(points => {
-                  tour.start_point = points[0];
+                  tour.points = points;
                   resolve(tour);
                 }).catch(reject);
             })
