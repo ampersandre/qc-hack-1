@@ -30,7 +30,7 @@ class TourService {
   }
 
   getAllTours() {
-    return db.map('SELECT * FROM tours', [], t => new TourModel(t));
+    return db.map('SELECT * FROM tours ORDER BY id', [], t => new TourModel(t));
   }
 
   getTourAndPointsById(tourId) {

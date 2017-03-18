@@ -34,8 +34,9 @@ router.post('/tours/:id/vote_up', function(req, res) {
     .then(tour => {
       tour.up_votes += 1;
       console.log('voting up', tour);
-      tourService.updateTour(tour);
-      res.status(200).send();
+      tourService.updateTour(tour).then(() => {
+        res.status(200).send();
+      });
     });
 });
 router.post('/tours/:id/vote_down', function(req, res) {
@@ -45,8 +46,9 @@ router.post('/tours/:id/vote_down', function(req, res) {
     .then(tour => {
       tour.down_votes += 1;
       console.log('voting down', tour);
-      tourService.updateTour(tour);
-      res.status(200).send();
+      tourService.updateTour(tour).then(() => {
+        res.status(200).send();
+      });
     });
 });
 
